@@ -1,24 +1,40 @@
-var BlueParticlesPart = (function() {
-	/**
-	 * Constants.
-	 */
+var BlueParticlesIntroPart = (function() {
+	/** Constants */
 	var ID = "Blue particles";
 
-	/**
-	 * Internal variables.
-	 */
+	/** Internal variables */
 	var initialized = false;
 	var renderer = null;
 	var scene = null;
 	var camera = null;
 	var mesh = null;
 	var sphere;
+
+	/** Shader variables */
 	var uniforms;
 	var attributes;
-	
-	var hello;
-	var year;
 
+	/** Tween, objects and animation state variables */
+	var tween;
+
+	var particlesOpacity = {
+		value : 0.0
+	}
+
+	var yearText;
+	var yearTextOpacity = {
+		value : 0.0
+	};
+	var romaniaText;
+	var romaniaTextOpacity = {
+		value : 0.0
+	};
+	var tulceaText;
+	var tulceaTextOpacity = {
+		value : 0.0
+	};
+
+	/* Particle background initialization */
 	function initParticles() {
 		attributes = {
 
@@ -41,6 +57,10 @@ var BlueParticlesPart = (function() {
 			color : {
 				type : "c",
 				value : new THREE.Color(0xffffff)
+			},
+			opacity : {
+				type : "f",
+				value : 0.0
 			},
 			texture : {
 				type : "t",
@@ -90,9 +110,13 @@ var BlueParticlesPart = (function() {
 		scene.add(sphere);
 	}
 
-	function createText(text) {
+	/*
+	 * Helper function to create text objects. By default it puts text's opacity
+	 * to 0.0, making it invisible.
+	 */
+	function createText(text, _color, _size) {
 		var text3d = new THREE.TextGeometry(text, {
-			size : 10,
+			size : _size,
 			height : 10,
 			curveSegments : 2,
 			font : "helvetiker"
@@ -106,7 +130,7 @@ var BlueParticlesPart = (function() {
 				* (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
 
 		var _textMaterial = new THREE.MeshBasicMaterial({
-			color : 0xffffff,
+			color : _color,
 			overdraw : true,
 			opacity : 0.0
 		});
@@ -129,13 +153,97 @@ var BlueParticlesPart = (function() {
 			textMaterial : _textMaterial
 		};
 	}
-	
+
+	/* Initialize text objects */
 	function initText() {
-		hello = createText("Hello");
-		year = createText("Year");
-		
-		scene.add(hello.textGeometry);
-		scene.add(year.textGeometry);
+		yearText = createText("July 2012", 0xFFFFFF, 15);
+		romaniaText = createText("Romania", 0xFFFFFF, 15);
+		tulceaText = createText("Tulcea", 0xFFFFFF, 15);
+
+		scene.add(yearText.textGeometry);
+		scene.add(romaniaText.textGeometry);
+		scene.add(tulceaText.textGeometry);
+	}
+
+	/* Initialize animation by buidling a sequence of tweens */
+	function initTweens() {
+		TWEEN.removeAll();
+
+		particlesOpacityUpdate = function() {
+			uniforms.opacity.value = particlesOpacity.value;
+		};
+
+		yearTextOpacityUpdate = function() {
+			yearText.textMaterial.opacity = yearTextOpacity.value;
+		};
+
+		romaniaTextOpacityUpdate = function() {
+			romaniaText.textMaterial.opacity = romaniaTextOpacity.value;
+		};
+
+		tulceaTextOpacityUpdate = function() {
+			tulceaText.textMaterial.opacity = tulceaTextOpacity.value;
+		};
+
+		tween = new TWEEN.Tween({}).delay(2000);
+
+		tween1 = new TWEEN.Tween(particlesOpacity).to({
+			value : 1.0
+		}, 9000).onUpdate(particlesOpacityUpdate);
+
+		tween2 = new TWEEN.Tween(yearTextOpacity).to({
+			value : 1.0
+		}, 2000).onUpdate(yearTextOpacityUpdate);
+
+		tween3 = new TWEEN.Tween({}).delay(1000);
+
+		tween4 = new TWEEN.Tween(yearTextOpacity).to({
+			value : 0.0
+		}, 2000).onUpdate(yearTextOpacityUpdate);
+
+		tween5 = new TWEEN.Tween({}).delay(500);
+
+		tween6 = new TWEEN.Tween(romaniaTextOpacity).to({
+			value : 1.0
+		}, 2000).onUpdate(romaniaTextOpacityUpdate);
+
+		tween7 = new TWEEN.Tween({}).delay(1000);
+
+		tween8 = new TWEEN.Tween(romaniaTextOpacity).to({
+			value : 0.0
+		}, 2000).onUpdate(romaniaTextOpacityUpdate);
+
+		tween9 = new TWEEN.Tween({}).delay(500);
+
+		tween10 = new TWEEN.Tween(tulceaTextOpacity).to({
+			value : 1.0
+		}, 2000).onUpdate(tulceaTextOpacityUpdate);
+
+		tween11 = new TWEEN.Tween({}).delay(6000);
+
+		tween12 = new TWEEN.Tween(tulceaTextOpacity).to({
+			value : 0.0
+		}, 2000).onUpdate(tulceaTextOpacityUpdate);
+
+		tween13 = new TWEEN.Tween(particlesOpacity).to({
+			value : 0.0
+		}, 5000).onUpdate(particlesOpacityUpdate);
+
+		tween.chain(tween1);
+		tween1.chain(tween2);
+		tween2.chain(tween3);
+		tween3.chain(tween4);
+		tween4.chain(tween5);
+		tween5.chain(tween6);
+		tween6.chain(tween7);
+		tween7.chain(tween8);
+		tween8.chain(tween9);
+		tween9.chain(tween10);
+		tween10.chain(tween11);
+		tween11.chain(tween12);
+		tween12.chain(tween13);
+
+		tween.start();
 	}
 
 	/**
@@ -158,7 +266,7 @@ var BlueParticlesPart = (function() {
 
 			initParticles();
 			initText();
-
+			initTweens();
 
 			initialized = true;
 
@@ -172,11 +280,12 @@ var BlueParticlesPart = (function() {
 			if (!initialized) {
 				return;
 			}
-
+		
 			var time = params.time * 0.005;
-			hello.textMaterial.opacity = Math.sin(time);
 
-			sphere.rotation.z = 0.01 * time;
+			TWEEN.update();
+
+			sphere.rotation.z = 0.005 * time;
 
 			for ( var i = 0; i < attributes.size.value.length; i++) {
 				attributes.size.value[i] = 14 + 13 * Math.sin(0.1 * i + time);

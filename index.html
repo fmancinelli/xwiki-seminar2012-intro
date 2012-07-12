@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>XWiki seminar intro</title>
+<script type="text/javascript" src="lib/Tween.js"></script>
 <script type="text/javascript" src="lib/Three.js"></script>
 <script src="fonts/helvetiker_regular.typeface.js"></script>
 <script type="text/javascript" src="js/parts/xwiki-intro-part-test.js"></script>
@@ -33,11 +34,12 @@
 	<script type="x-shader/x-fragment" id="fragmentshader">
 		uniform vec3 color;
 		uniform sampler2D texture;
+		uniform float opacity;
 
 		varying vec3 vColor;
 
 		void main() {
-			gl_FragColor = vec4( color * vColor, 1.0 );
+			gl_FragColor = vec4( color * vColor, opacity );
 			gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
 		}
 	</script>

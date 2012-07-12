@@ -29,9 +29,10 @@ var XWikiIntro = (function() {
 		for (i = 0; i < storyboard.length; i++) {
 			if (_time >= storyboard[i].startTime
 					&& _time < storyboard[i].endTime) {
-				part = storyboard[i].part;
+				part = storyboard[i].part;				
 				part.drawFrame({
-					time : _time
+					time : _time,
+					localTime : _time - storyboard[i].startTime
 				});
 			}
 		}
@@ -50,7 +51,7 @@ var XWikiIntro = (function() {
 	}
 	
 	function initAudio() {
-		//audio = new Audio("audio/dope.mp3");		
+		audio = new Audio("audio/dope.mp3");		
 	}
 
 	/*
@@ -72,7 +73,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(BlueParticlesPart, 0, 60000, {
+		addPart(BlueParticlesIntroPart, 0, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -96,7 +97,7 @@ var XWikiIntro = (function() {
 		 */
 		start : function() {
 			startTime = (new Date()).getTime();
-			//audio.play();
+			audio.play();
 			setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 		}
 	};
