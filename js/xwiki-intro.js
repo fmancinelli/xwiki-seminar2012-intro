@@ -9,6 +9,7 @@ var XWikiIntro = (function() {
 	 */
 	var storyboard = [];
 	var renderer = null;
+	var audio = null;
 	var startTime = 0;
 
 	/**
@@ -47,6 +48,10 @@ var XWikiIntro = (function() {
 			endTime : _endTime
 		});
 	}
+	
+	function initAudio() {
+		//audio = new Audio("audio/dope.mp3");		
+	}
 
 	/*
 	 * Initialization function for Three.js
@@ -67,7 +72,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(TestPart, 0, 3000, {
+		addPart(BlueParticlesPart, 0, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -81,6 +86,7 @@ var XWikiIntro = (function() {
 		 * Initialize the intro.
 		 */
 		init : function(screenId, screenWidth, screenHeight) {
+			initAudio();
 			initThreeJS(screenId, screenWidth, screenHeight);
 			initParts(screenWidth, screenHeight);
 		},
@@ -90,6 +96,7 @@ var XWikiIntro = (function() {
 		 */
 		start : function() {
 			startTime = (new Date()).getTime();
+			//audio.play();
 			setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 		}
 	};
