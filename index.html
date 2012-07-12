@@ -3,9 +3,42 @@
 <title>XWiki seminar intro</title>
 <script type="text/javascript" src="lib/Three.js"></script>
 <script type="text/javascript" src="js/parts/xwiki-intro-part-test.js"></script>
+<script type="text/javascript" src="js/parts/blue-particles.js"></script>
 <script type="text/javascript" src="js/xwiki-intro.js"></script>
 </head>
-<body style="background: #000000" onload="XWikiIntro.init('screen', 1024, 768); XWikiIntro.start()">
+<body style="background: #000000"
+	onload="XWikiIntro.init('screen', 1024, 768); XWikiIntro.start()">
 	<div id="screen"></div>
+
+	<script type="x-shader/x-vertex" id="vertexshader">
+		uniform float amplitude;
+		attribute float size;
+		attribute vec3 customColor;
+
+		varying vec3 vColor;
+
+		void main() {
+			vColor = customColor;
+
+			vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+			//gl_PointSize = size;
+			gl_PointSize = size * ( 150.0 / length( mvPosition.xyz ) );
+
+			gl_Position = projectionMatrix * mvPosition;
+		}
+	</script>
+
+	<script type="x-shader/x-fragment" id="fragmentshader">
+		uniform vec3 color;
+		uniform sampler2D texture;
+
+		varying vec3 vColor;
+
+		void main() {
+			gl_FragColor = vec4( color * vColor, 1.0 );
+			gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+		}
+	</script>
 </body>
 </html>

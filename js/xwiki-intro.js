@@ -22,6 +22,9 @@ var XWikiIntro = (function() {
 	function mainLoop() {
 		_time = (new Date()).getTime() - startTime;
 
+		requestAnimationFrame(function() {
+		});
+
 		for (i = 0; i < storyboard.length; i++) {
 			if (_time >= storyboard[i].startTime
 					&& _time < storyboard[i].endTime) {
@@ -64,7 +67,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(TestPart, {
+		addPart(BlueParticles, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
