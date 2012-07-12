@@ -7,7 +7,7 @@ var XWikiIntro = (function() {
 	/**
 	 * Internal variables.
 	 */
-	var parts = [];
+	var storyboard = [];
 	var renderer = null;
 	var startTime = 0;
 
@@ -22,19 +22,27 @@ var XWikiIntro = (function() {
 	function mainLoop() {
 		_time = (new Date()).getTime() - startTime;
 
-		for (i = 0; i < parts.length; i++) {
-			parts[i].drawFrame({
-				time : _time
-			});
+		for (i = 0; i < storyboard.length; i++) {
+			if (_time >= storyboard[i].startTime
+					&& _time < storyboard[i].endTime) {
+				part = storyboard[i].part;
+				part.drawFrame({
+					time : _time
+				});
+			}
 		}
 	}
 
 	/*
 	 * Add a part after and initialize it.
 	 */
-	function addPart(part, params) {
-		part.init(renderer, params);
-		parts.push(part);
+	function addPart(_part, params) {
+		_part.init(renderer, params);
+		storyboard.push({
+			part : _part,
+			startTime : 0,
+			endTime : 3000
+		});
 	}
 
 	/*
