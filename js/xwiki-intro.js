@@ -39,12 +39,12 @@ var XWikiIntro = (function() {
 	/*
 	 * Add a part after and initialize it.
 	 */
-	function addPart(_part, params) {
-		_part.init(renderer, params);
+	function addPart(_part, _startTime, _endTime, initParams) {
+		_part.init(renderer, initParams);
 		storyboard.push({
 			part : _part,
-			startTime : 0,
-			endTime : 3000
+			startTime : _startTime,
+			endTime : _endTime
 		});
 	}
 
@@ -67,7 +67,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(BlueParticles, {
+		addPart(TestPart, 0, 3000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
