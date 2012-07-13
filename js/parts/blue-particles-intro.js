@@ -156,9 +156,9 @@ var BlueParticlesIntroPart = (function() {
 
 	/* Initialize text objects */
 	function initText() {
-		yearText = createText("July 2012", 0xFFFFFF, 15);
-		romaniaText = createText("Romania", 0xFFFFFF, 15);
-		tulceaText = createText("Tulcea", 0xFFFFFF, 15);
+		yearText = createText("july 2012", 0xFFFFFF, 20);
+		romaniaText = createText("romania", 0xFFFFFF, 20);
+		tulceaText = createText("tulcea", 0xFFFFFF, 20);
 
 		scene.add(yearText.textGeometry);
 		scene.add(romaniaText.textGeometry);
@@ -219,7 +219,7 @@ var BlueParticlesIntroPart = (function() {
 			value : 1.0
 		}, 2000).onUpdate(tulceaTextOpacityUpdate);
 
-		tween11 = new TWEEN.Tween({}).delay(6000);
+		tween11 = new TWEEN.Tween({}).delay(5000);
 
 		tween12 = new TWEEN.Tween(tulceaTextOpacity).to({
 			value : 0.0
