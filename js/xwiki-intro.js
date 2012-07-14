@@ -73,7 +73,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(BlueParticlesIntroPart, 0, 60000, {
+		addPart(XWikiLogoPart, 0, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -87,7 +87,7 @@ var XWikiIntro = (function() {
 		 * Initialize the intro.
 		 */
 		init : function(screenId, screenWidth, screenHeight) {
-			initAudio();
+			//initAudio();
 			initThreeJS(screenId, screenWidth, screenHeight);
 			initParts(screenWidth, screenHeight);
 		},
@@ -97,7 +97,7 @@ var XWikiIntro = (function() {
 		 */
 		start : function() {
 			startTime = (new Date()).getTime();
-			audio.play();
+			//audio.play();
 			setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 		}
 	};
