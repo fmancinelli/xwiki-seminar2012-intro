@@ -8,6 +8,7 @@ var XWikiLogoPart = (function() {
 	 * Internal variables.
 	 */
 	var initialized = false;
+	var started = false;
 	var renderer = null;
 	var scene = null;
 	var camera = null;
@@ -87,7 +88,7 @@ var XWikiLogoPart = (function() {
 		
 		tween.chain(tween1);		
 		
-		tween.start();
+		tween.start(0);
 	}
 
 	/**
@@ -99,7 +100,6 @@ var XWikiLogoPart = (function() {
 		 */
 		init : function(_renderer, params) {
 			renderer = _renderer;
-			renderer.setClearColorHex(0x000020, 1.0);
 
 			scene = new THREE.Scene();
 
@@ -111,12 +111,22 @@ var XWikiLogoPart = (function() {
 			xwikiLogo = getXWikiLogo();
 			xwikiLogo.position.z = xwikiLogoPosition.z;
 			scene.add(xwikiLogo);
-			
-			initTweens();
-
+						
 			initialized = true;
 
 			console.log(ID + " part initialized.");
+		},
+		
+		start : function() {
+			renderer.setClearColorHex(0x000020, 1.0);
+
+			initTweens();
+			
+			started = true;
+		},
+		
+		isStarted : function() {
+			return started;
 		},
 
 		/*
@@ -127,7 +137,7 @@ var XWikiLogoPart = (function() {
 				return;
 			}
 
-			tween.update();
+			TWEEN.update(params.localTime);
 			
 			renderer.render(scene, camera);
 		}

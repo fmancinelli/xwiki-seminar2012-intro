@@ -4,6 +4,7 @@ var BlueParticlesIntroPart = (function() {
 
 	/** Internal variables */
 	var initialized = false;
+	var started = false;
 	var renderer = null;
 	var scene = null;
 	var camera = null;
@@ -241,7 +242,7 @@ var BlueParticlesIntroPart = (function() {
 		tween11.chain(tween12);
 		tween12.chain(tween13);
 
-		tween.start();
+		tween.start(0);
 	}
 
 	/**
@@ -263,12 +264,21 @@ var BlueParticlesIntroPart = (function() {
 			scene.add(camera);
 
 			initParticles();
-			initText();
-			initTweens();
+			initText();			
 
 			initialized = true;
 
 			console.log(ID + " part initialized.");
+		},
+		
+		start : function() {
+			initTweens();
+			
+			started = true;
+		},
+		
+		isStarted : function() {
+			return started;
 		},
 
 		/*
@@ -280,7 +290,7 @@ var BlueParticlesIntroPart = (function() {
 			}
 		
 			var time = params.time * 0.005;
-			
+
 			TWEEN.update(params.localTime);
 
 			sphere.rotation.z = 0.005 * time;
