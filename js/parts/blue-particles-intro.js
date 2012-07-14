@@ -166,10 +166,8 @@ var BlueParticlesIntroPart = (function() {
 	}
 
 	/* Initialize animation by buidling a sequence of tweens */
-	function initTweens() {
-		TWEEN.removeAll();
-
-		particlesOpacityUpdate = function() {
+	function initTweens() {		
+		particlesOpacityUpdate = function() {		
 			uniforms.opacity.value = particlesOpacity.value;
 		};
 
@@ -282,8 +280,8 @@ var BlueParticlesIntroPart = (function() {
 			}
 		
 			var time = params.time * 0.005;
-
-			TWEEN.update();
+			
+			TWEEN.update(params.localTime);
 
 			sphere.rotation.z = 0.005 * time;
 
