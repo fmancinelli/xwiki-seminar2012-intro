@@ -14,7 +14,51 @@ var XWikiLogoPart = (function() {
 	var camera = null;
 	var tween = null;
 	var xwikiLogo = null;
-	var xwikiLogoPosition = {x : 0, y : 0, z : 1000, rx : 0};
+	var xwikiLogoPosition = {
+		x : 0,
+		y : 0,
+		z : 1000,
+		rx : 0
+	};
+
+	var xwikiText = null;
+	var xwikiTextPosition = {
+		x : 0,
+		y : 0,
+		z : 1000,
+		rx : 0,
+		ry : 0,
+		rz : 0
+	};
+
+	function createText(text, _color, _size) {
+		var text3d = new THREE.TextGeometry(text, {
+			size : _size,
+			height : 10,
+			curveSegments : 2,
+			font : "helvetiker"
+
+		});
+
+		text3d.computeBoundingBox();
+		var centerOffsetX = -0.5
+				* (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+		var centerOffsetY = -0.5
+				* (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
+
+		var _textMaterial = new THREE.MeshBasicMaterial({
+			color : _color,
+			overdraw : true,
+			opacity : 1.0
+		});
+		text = new THREE.Mesh(text3d, _textMaterial);
+
+		return {
+			mesh : text,
+			centerOffsetX : centerOffsetX,
+			centerOffsetY : centerOffsetY
+		};
+	}
 
 	function getXWikiLogo() {
 		xwikiLogo = new THREE.Object3D();
@@ -68,26 +112,74 @@ var XWikiLogoPart = (function() {
 
 		return xwikiLogo;
 	}
-	
-	function initTweens() {		
+
+	function initTweens() {
 		function xwikiLogoUpdate() {
 			xwikiLogo.position.x = xwikiLogoPosition.x;
 			xwikiLogo.position.y = xwikiLogoPosition.y;
 			xwikiLogo.position.z = xwikiLogoPosition.z;
-			xwikiLogo.rotation.x = xwikiLogoPosition.rx;			
+			xwikiLogo.rotation.x = xwikiLogoPosition.rx;
+
 		}
-		
+
+		function xwikiTextUpdate() {
+			xwikiText.mesh.position.x = xwikiTextPosition.x;
+			xwikiText.mesh.position.y = xwikiTextPosition.y;
+			xwikiText.mesh.position.z = xwikiTextPosition.z;
+			xwikiText.mesh.rotation.x = xwikiTextPosition.rx;
+			xwikiText.mesh.rotation.y = xwikiTextPosition.ry;
+			xwikiText.mesh.rotation.z = xwikiTextPosition.rz;
+		}
+
 		function xwikiLogoFreeRotate() {
+			xwikiLogo.position.x = xwikiLogoPosition.x;
+			xwikiLogo.position.y = xwikiLogoPosition.y;
+			xwikiLogo.position.z = xwikiLogoPosition.z;
 			xwikiLogo.rotation.x += 0.02;
 			xwikiLogo.rotation.y += 0.03;
 		}
-				
-		tween = new TWEEN.Tween(xwikiLogoPosition).to({z: -500, rx: -6.28}, 4000).onUpdate(xwikiLogoUpdate);
-		
-		tween1 = new TWEEN.Tween({}).to({}, 10000).delay(1000).onUpdate(xwikiLogoFreeRotate);
-		
-		tween.chain(tween1);		
-		
+
+		/* Begin of XWiki logo tween definition */
+
+		tween = new TWEEN.Tween(xwikiLogoPosition).to({
+			z : -500,
+			rx : -6.28
+		}, 4000).onUpdate(xwikiLogoUpdate);
+
+		tween1 = new TWEEN.Tween({}).to({}, 31500/* 40000 */).delay(3850)
+				.onUpdate(xwikiLogoFreeRotate);
+
+		tween2 = new TWEEN.Tween(xwikiLogoPosition).to({
+			z : 1000,
+			y : 500
+		}, 7000).onUpdate(xwikiLogoFreeRotate);
+
+		tween.chain(tween1);
+		tween1.chain(tween2);
+
+		tween.start(0);
+
+		/* Begin of XWiki text tween definition */
+
+		xwikiTextPosition.x = -1000;
+		xwikiTextPosition.y = 0;
+		tween = new TWEEN.Tween(xwikiTextPosition).to({
+			x : xwikiText.centerOffsetX,
+			y : -400,
+			z : 0,
+			rx : -6.28,
+			rz : 6.28,
+			ry : 6.28
+		}, 10500).delay(17000).onUpdate(xwikiTextUpdate);
+
+		tween1 = new TWEEN.Tween(xwikiTextPosition).to({
+			z : 1100,
+			y : 0,
+			rx : 3.14
+		}, 7000).delay(11850).onUpdate(xwikiTextUpdate);
+
+		tween.chain(tween1);
+
 		tween.start(0);
 	}
 
@@ -111,20 +203,24 @@ var XWikiLogoPart = (function() {
 			xwikiLogo = getXWikiLogo();
 			xwikiLogo.position.z = xwikiLogoPosition.z;
 			scene.add(xwikiLogo);
-						
+
+			xwikiText = createText("XWiki", 0xcfcfcf, 120);
+			xwikiText.mesh.position.x = xwikiTextPosition.x;
+			xwikiText.mesh.position.y = xwikiTextPosition.y;
+			xwikiText.mesh.position.z = xwikiTextPosition.z;
+			scene.add(xwikiText.mesh);
+
 			initialized = true;
 
 			console.log(ID + " part initialized.");
 		},
-		
-		start : function() {
-			renderer.setClearColorHex(0x000020, 1.0);
 
+		start : function() {
 			initTweens();
-			
+
 			started = true;
 		},
-		
+
 		isStarted : function() {
 			return started;
 		},
@@ -138,7 +234,7 @@ var XWikiLogoPart = (function() {
 			}
 
 			TWEEN.update(params.localTime);
-			
+
 			renderer.render(scene, camera);
 		}
 	}

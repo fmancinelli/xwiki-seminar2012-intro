@@ -23,7 +23,7 @@ var XWikiIntro = (function() {
 	 */
 	function mainLoop() {
 		_time = (new Date()).getTime() - startTime;
-		
+
 		text.innerText = _time;
 
 		requestAnimationFrame(function() {
@@ -32,12 +32,12 @@ var XWikiIntro = (function() {
 		for (i = 0; i < storyboard.length; i++) {
 			if (_time >= storyboard[i].startTime
 					&& _time < storyboard[i].endTime) {
-				part = storyboard[i].part;	
-				
-				if(!part.isStarted()) {
+				part = storyboard[i].part;
+
+				if (!part.isStarted()) {
 					part.start();
 				}
-				
+
 				part.drawFrame({
 					time : _time,
 					localTime : _time - storyboard[i].startTime
@@ -57,9 +57,9 @@ var XWikiIntro = (function() {
 			endTime : _endTime
 		});
 	}
-	
+
 	function initAudio() {
-		audio = new Audio("audio/dope.mp3");		
+		audio = new Audio("audio/dope.mp3");
 	}
 
 	/*
@@ -85,7 +85,7 @@ var XWikiIntro = (function() {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
-		addPart(XWikiLogoPart, 43001, 60000, {
+		addPart(XWikiLogoPart, 43001, 120000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -109,13 +109,13 @@ var XWikiIntro = (function() {
 		 * Start the intro.
 		 */
 		start : function() {
-			startTime = (new Date()).getTime();			
+			startTime = (new Date()).getTime();
 			audio.addEventListener('canplay', function() {
 				//audio.currentTime = 43;
-				//audio.play();
+				audio.play();
 				setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 			})
-			
+
 		}
 	};
 
