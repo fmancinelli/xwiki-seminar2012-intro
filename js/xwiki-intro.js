@@ -29,7 +29,12 @@ var XWikiIntro = (function() {
 		for (i = 0; i < storyboard.length; i++) {
 			if (_time >= storyboard[i].startTime
 					&& _time < storyboard[i].endTime) {
-				part = storyboard[i].part;				
+				part = storyboard[i].part;	
+				
+				if(!part.isStarted()) {
+					part.start();
+				}
+				
 				part.drawFrame({
 					time : _time,
 					localTime : _time - storyboard[i].startTime
