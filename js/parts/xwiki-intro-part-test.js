@@ -8,6 +8,7 @@ var TestPart = (function() {
 	 * Internal variables.
 	 */
 	var initialized = false;
+	var started = false;
 	var renderer = null;
 	var scene = null;
 	var camera = null;
@@ -43,6 +44,14 @@ var TestPart = (function() {
 
 			console.log(ID + " part initialized.");
 		},
+		
+		start : function() {
+			started = true;
+		},
+		
+		isStarted : function() {
+			return started;
+		},		
 
 		/*
 		 * Draw the next frame.
