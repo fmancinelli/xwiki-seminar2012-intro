@@ -81,11 +81,15 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(BlueParticlesIntroPart, 0, 43000, {
-			screenWidth : _screenWidth,
-			screenHeight : _screenHeight
-		});
-		addPart(XWikiLogoPart, 43001, 120000, {
+		// addPart(BlueParticlesIntroPart, 0, 43000, {
+		// screenWidth : _screenWidth,
+		// screenHeight : _screenHeight
+		// });
+		// addPart(XWikiLogoPart, 43001, 120000, {
+		// screenWidth : _screenWidth,
+		// screenHeight : _screenHeight
+		// });
+		addPart(XWikiSeminarPart, 0, 10000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -98,7 +102,7 @@ var XWikiIntro = (function() {
 		/*
 		 * Initialize the intro.
 		 */
-		init : function(screenId, screenWidth, screenHeight) {			
+		init : function(screenId, screenWidth, screenHeight) {
 			initAudio();
 			initThreeJS(screenId, screenWidth, screenHeight);
 			initParts(screenWidth, screenHeight);
@@ -110,8 +114,8 @@ var XWikiIntro = (function() {
 		start : function() {
 			startTime = (new Date()).getTime();
 			audio.addEventListener('canplay', function() {
-				//audio.currentTime = 43;
-				audio.play();
+				// audio.currentTime = 43;
+				//audio.play();
 				setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 			})
 
