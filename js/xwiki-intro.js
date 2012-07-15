@@ -24,7 +24,7 @@ var XWikiIntro = (function() {
 	function mainLoop() {
 		_time = (new Date()).getTime() - startTime;
 
-		text.innerText = _time;
+		Utils.write(_time);
 
 		requestAnimationFrame(function() {
 		});
@@ -98,8 +98,7 @@ var XWikiIntro = (function() {
 		/*
 		 * Initialize the intro.
 		 */
-		init : function(screenId, screenWidth, screenHeight) {
-			text = document.getElementById("text");
+		init : function(screenId, screenWidth, screenHeight) {			
 			initAudio();
 			initThreeJS(screenId, screenWidth, screenHeight);
 			initParts(screenWidth, screenHeight);
