@@ -12,16 +12,24 @@ var XWikiSeminarPart = (function() {
 	var renderer = null;
 	var scene = null;
 	var camera = null;
-	
+
 	var seminarWall = null;
 	var talksWall = null;
 	var hackatonWall = null;
-	var funWall = null;
 	var futureWall = null;
+
+	var wallsOpacity = {
+		value : 0.0
+	};
+
+	var cameraPosition = {
+		z : 1500
+	}
 
 	var counter = 1;
 
-	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z) {
+	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z,
+			_opacity) {
 		function change_uvs(geometry, unitx, unity, offsetx, offsety) {
 			var i, j, uv;
 
@@ -57,7 +65,8 @@ var XWikiSeminarPart = (function() {
 				change_uvs(geometry, ux, uy, ox, oy);
 
 				material = new THREE.MeshBasicMaterial({
-					map : texture
+					map : texture,
+					opacity : _opacity
 				});
 
 				mesh = new THREE.Mesh(geometry, material);
@@ -79,6 +88,95 @@ var XWikiSeminarPart = (function() {
 		return wall;
 	}
 
+	function initTweens() {
+		function wallsOpacityUpdate() {
+			for (i = 0; i < seminarWall.children.length; i++) {
+				cube = seminarWall.children[i];
+				cube.material.opacity = wallsOpacity.value;
+			}
+
+			for (i = 0; i < talksWall.children.length; i++) {
+				cube = talksWall.children[i];
+				cube.material.opacity = wallsOpacity.value;
+			}
+
+			for (i = 0; i < hackatonWall.children.length; i++) {
+				cube = hackatonWall.children[i];
+				cube.material.opacity = wallsOpacity.value;
+			}
+
+			for (i = 0; i < futureWall.children.length; i++) {
+				cube = futureWall.children[i];
+				cube.material.opacity = wallsOpacity.value;
+			}
+		}
+
+		function cameraPositionUpdate() {
+			camera.position.z = cameraPosition.z;
+		}
+
+		function wallExplosionUpdate(wall) {
+			return function() {
+				for (i = 0; i < wall.children.length; i++) {
+					cube = wall.children[i];
+
+					cube.rotation.x += 10 * cube.dx;
+					cube.rotation.y += 10 * cube.dy;
+
+					cube.position.x += 200 * cube.dx;
+					cube.position.y += 200 * cube.dy;
+					cube.position.z += 400 * cube.dx;
+				}
+			}
+		}
+
+		TWEEN.removeAll();
+
+		tween = new TWEEN.Tween(wallsOpacity).to({
+			value : 1.0
+		}, 12100).delay(1100).onUpdate(wallsOpacityUpdate);
+
+		cameraTween = new TWEEN.Tween(cameraPosition).to({
+			z : 800
+		}, 4000).delay(13200).onUpdate(cameraPositionUpdate);
+
+		cameraTween1 = new TWEEN.Tween(cameraPosition).to({
+			z : -700
+		}, 4000).onUpdate(cameraPositionUpdate);
+
+		cameraTween2 = new TWEEN.Tween(cameraPosition).to({
+			z : -2200
+		}, 4000).onUpdate(cameraPositionUpdate);
+
+		cameraTween3 = new TWEEN.Tween(cameraPosition).to({
+			z : -3700
+		}, 4000).onUpdate(cameraPositionUpdate);
+
+		cameraTween.chain(cameraTween1);
+		cameraTween1.chain(cameraTween2);
+		cameraTween2.chain(cameraTween3);
+
+		seminarExplosionTween = new TWEEN.Tween({}).to({}, 3900).delay(17100)
+				.onUpdate(wallExplosionUpdate(seminarWall));
+
+		talksExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
+				wallExplosionUpdate(talksWall));
+
+		hackatonExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
+				wallExplosionUpdate(hackatonWall));
+
+		futureExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
+				wallExplosionUpdate(futureWall));
+	
+		seminarExplosionTween.chain(talksExplosionTween);
+		talksExplosionTween.chain(hackatonExplosionTween);
+		hackatonExplosionTween.chain(futureExplosionTween);
+
+		tween.start(0);
+		cameraTween.start(0);
+		seminarExplosionTween.start(0);
+	}
+
 	/**
 	 * Public API.
 	 */
@@ -93,23 +191,23 @@ var XWikiSeminarPart = (function() {
 
 			camera = new THREE.PerspectiveCamera(50, params.screenWidth
 					/ params.screenHeight, 1, 10000);
-			camera.position.z = 1500;
+			camera.position.z = cameraPosition.z;
 			scene.add(camera);
 
-			seminarWall = buildWall("images/seminar.png", 1024, 100, 10, 1, 0);
+			seminarWall = buildWall("images/seminar.png", 1024, 100, 10, 1, 0,
+					wallsOpacity.value);
 			scene.add(seminarWall);
 
-			talksWall = buildWall("images/talks.png", 1024, 100, 10, 1, -1500);
+			talksWall = buildWall("images/talks.png", 1024, 100, 10, 1, -1500,
+					wallsOpacity.value);
 			scene.add(talksWall);
 
 			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 10, 1,
-					-3000);
+					-3000, wallsOpacity.value);
 			scene.add(hackatonWall);
 
-			funWall = buildWall("images/fun.png", 1024, 100, 10, 1, -4500);
-			scene.add(funWall);
-
-			futureWall = buildWall("images/future.png", 1024, 100, 10, 1, -6000);
+			futureWall = buildWall("images/future.png", 1024, 100, 10, 1,
+					-4500, wallsOpacity.value);
 			scene.add(futureWall);
 
 			initialized = true;
@@ -118,6 +216,7 @@ var XWikiSeminarPart = (function() {
 		},
 
 		start : function() {
+			initTweens();
 			started = true;
 		},
 
@@ -133,6 +232,8 @@ var XWikiSeminarPart = (function() {
 				return;
 			}
 
+			TWEEN.update(params.localTime);
+
 			// if (counter > 100) {
 			// for (i = 0; i < wall.children.length; i++) {
 			// cube = wall.children[i];
@@ -147,9 +248,9 @@ var XWikiSeminarPart = (function() {
 			// }
 			// }
 
-			camera.position.z -= 5;
+			// camera.position.z -= 5;
 
-			counter++;
+			// counter++;
 
 			renderer.render(scene, camera);
 		}
