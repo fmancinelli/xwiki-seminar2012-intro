@@ -138,6 +138,8 @@ var XWikiLogoPart = (function() {
 			xwikiLogo.rotation.x += 0.02;
 			xwikiLogo.rotation.y += 0.03;
 		}
+		
+		TWEEN.removeAll();
 
 		/* Begin of XWiki logo tween definition */
 
