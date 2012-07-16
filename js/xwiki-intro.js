@@ -89,7 +89,7 @@ var XWikiIntro = (function() {
 		// screenWidth : _screenWidth,
 		// screenHeight : _screenHeight
 		// });
-		addPart(XWikiSeminarPart, 0, 10000, {
+		addPart(XWikiSeminarPart, 0, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});

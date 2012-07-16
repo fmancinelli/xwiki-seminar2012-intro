@@ -12,41 +12,71 @@ var XWikiSeminarPart = (function() {
 	var renderer = null;
 	var scene = null;
 	var camera = null;
-	var mesh = null;
-
-	/** *********** */
-	var texture, material, mesh, wall;
-
-
-	var cube_count,
-
-	meshes = [], materials = [],
-
-	xgrid = 20, ygrid = 2;
+	
+	var seminarWall = null;
+	var talksWall = null;
+	var hackatonWall = null;
+	var funWall = null;
+	var futureWall = null;
 
 	var counter = 1;
 
-	function change_uvs(geometry, unitx, unity, offsetx, offsety) {
+	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z) {
+		function change_uvs(geometry, unitx, unity, offsetx, offsety) {
+			var i, j, uv;
 
-		var i, j, uv;
+			for (i = 0; i < geometry.faceVertexUvs[0].length; i++) {
+				uv = geometry.faceVertexUvs[0][i];
 
-		for (i = 0; i < geometry.faceVertexUvs[0].length; i++) {
-
-			uv = geometry.faceVertexUvs[0][i];
-
-			for (j = 0; j < uv.length; j++) {
-
-				uv[j].u = (uv[j].u + offsetx) * unitx;
-				uv[j].v = (uv[j].v + offsety) * unity;
-
+				for (j = 0; j < uv.length; j++) {
+					uv[j].u = (uv[j].u + offsetx) * unitx;
+					uv[j].v = (uv[j].v + offsety) * unity;
+				}
 			}
-
 		}
 
-	}
+		var i, j, ux, uy, ox, oy, geometry, xsize, ysize, mesh, texture;
 
-	function buildWall(texture, xgrid, ygrid) {
+		texture = THREE.ImageUtils.loadTexture(texture);
 
+		ux = 1 / xgrid;
+		uy = 1 / ygrid;
+
+		xsize = textureWidth / xgrid;
+		ysize = textureHeight / ygrid;
+
+		wall = new THREE.Object3D();
+
+		for (i = 0; i < xgrid; i++)
+			for (j = 0; j < ygrid; j++) {
+
+				ox = i;
+				oy = j;
+
+				geometry = new THREE.CubeGeometry(xsize, ysize, xsize);
+				change_uvs(geometry, ux, uy, ox, oy);
+
+				material = new THREE.MeshBasicMaterial({
+					map : texture
+				});
+
+				mesh = new THREE.Mesh(geometry, material);
+
+				mesh.position.x = (i - xgrid / 2) * xsize;
+				mesh.position.y = -(j - ygrid / 2) * ysize;
+				mesh.position.z = 0;
+
+				mesh.scale.x = mesh.scale.y = mesh.scale.z = 1;
+
+				mesh.dx = 0.02 * (Math.random());
+				mesh.dy = 0.04 * (0.5 - Math.random());
+
+				wall.add(mesh);
+			}
+
+		wall.position.z = z;
+
+		return wall;
 	}
 
 	/**
@@ -58,7 +88,6 @@ var XWikiSeminarPart = (function() {
 		 */
 		init : function(_renderer, params) {
 			renderer = _renderer;
-			renderer.setClearColorHex(0xffff00, 1.0);
 
 			scene = new THREE.Scene();
 
@@ -67,55 +96,21 @@ var XWikiSeminarPart = (function() {
 			camera.position.z = 1500;
 			scene.add(camera);
 
-			texture = THREE.ImageUtils.loadTexture("images/seminar.png");
+			seminarWall = buildWall("images/seminar.png", 1024, 100, 10, 1, 0);
+			scene.add(seminarWall);
 
-			var i, j, ux, uy, ox, oy, geometry, xsize, ysize;
+			talksWall = buildWall("images/talks.png", 1024, 100, 10, 1, -1500);
+			scene.add(talksWall);
 
-			ux = 1 / xgrid;
-			uy = 1 / ygrid;
+			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 10, 1,
+					-3000);
+			scene.add(hackatonWall);
 
-			xsize = 1024 / xgrid;
-			ysize = 100 / ygrid;
+			funWall = buildWall("images/fun.png", 1024, 100, 10, 1, -4500);
+			scene.add(funWall);
 
-			cube_count = 0;
-
-			wall = new THREE.Object3D();
-
-			for (i = 0; i < xgrid; i++)
-				for (j = 0; j < ygrid; j++) {
-
-					ox = i;
-					oy = j;
-
-					geometry = new THREE.CubeGeometry(xsize, ysize, xsize);
-					change_uvs(geometry, ux, uy, ox, oy);
-
-					material = new THREE.MeshBasicMaterial({
-						map : texture
-					});
-					materials[cube_count] = material;
-
-					mesh = new THREE.Mesh(geometry, material);
-
-					mesh.position.x = (i - xgrid / 2) * xsize;
-					mesh.position.y = -(j - ygrid / 2) * ysize;
-					mesh.position.z = 0;
-
-					mesh.scale.x = mesh.scale.y = mesh.scale.z = 1;
-
-					mesh.dx = 0.02 * (Math.random());
-					mesh.dy = 0.04 * (0.5 - Math.random());
-
-					meshes[cube_count] = mesh;
-
-					cube_count += 1;
-
-					wall.add(mesh);
-				}
-
-			scene.add(wall);
-
-			renderer.autoClear = false;
+			futureWall = buildWall("images/future.png", 1024, 100, 10, 1, -6000);
+			scene.add(futureWall);
 
 			initialized = true;
 
@@ -137,23 +132,20 @@ var XWikiSeminarPart = (function() {
 			if (!initialized) {
 				return;
 			}
-			
-			if (counter > 100) {
 
-				for (i = 0; i < cube_count; i++) {
-
-					mesh = meshes[i];
-
-					mesh.rotation.x += 10 * mesh.dx;
-					mesh.rotation.y += 10 * mesh.dy;
-
-					mesh.position.x += 200 * mesh.dx;
-					mesh.position.y += 200 * mesh.dy;
-					mesh.position.z += 400 * mesh.dx;
-
-				}
-
-			}
+			// if (counter > 100) {
+			// for (i = 0; i < wall.children.length; i++) {
+			// cube = wall.children[i];
+			//
+			// cube.rotation.x += 10 * cube.dx;
+			// cube.rotation.y += 10 * cube.dy;
+			//
+			// cube.position.x += 200 * cube.dx;
+			// cube.position.y += 200 * cube.dy;
+			// cube.position.z += 400 * cube.dx;
+			//
+			// }
+			// }
 
 			camera.position.z -= 5;
 
