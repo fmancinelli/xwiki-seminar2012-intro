@@ -52,10 +52,8 @@ var WelcomePart = (function() {
 		});
 
 		text3d.computeBoundingBox();
-		var centerOffsetX = -0.5
-				* (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-		var centerOffsetY = -0.5
-				* (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
+		var centerOffsetX = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+		var centerOffsetY = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
 
 		var _textMaterial = new THREE.MeshBasicMaterial({
 			color : _color,
@@ -81,7 +79,7 @@ var WelcomePart = (function() {
 			textMaterial : _textMaterial
 		};
 	}
-	
+
 	/**
 	 * Public API.
 	 */
@@ -91,34 +89,30 @@ var WelcomePart = (function() {
 		 */
 		init : function(_renderer, params) {
 			renderer = _renderer;
-			
 
 			scene = new THREE.Scene();
 			sceneCube = new THREE.Scene();
 
-			camera = new THREE.PerspectiveCamera(60, params.screenWidth
-					/ params.screenHeight, 1, 100000);
+			camera = new THREE.PerspectiveCamera(60, params.screenWidth / params.screenHeight, 1, 100000);
 			camera.position.z = 3200;
 			scene.add(camera);
 
-			cameraCube = new THREE.PerspectiveCamera(60, params.screenWidth
-					/ params.screenHeight, 1, 100000);
+			cameraCube = new THREE.PerspectiveCamera(60, params.screenWidth / params.screenHeight, 1, 100000);
 			sceneCube.add(cameraCube);
-			
+
 			welcomeText = createText("welcome", 0xffffff, 800);
 			scene.add(welcomeText.textGeometry);
-						
+
 			var path = "images/";
 			var format = '.jpg';
-			var urls = [ path + 't1' + format, path + 't3' + format,
-					path + 'ny' + format, path + 'ny' + format,
+			var urls = [ path + 't1' + format, path + 't3' + format, path + 'ny' + format, path + 'ny' + format,
 					path + 'ny' + format, path + 't2' + format ];
 
 			var textureCube = THREE.ImageUtils.loadTextureCube(urls)
-								
+
 			var shader = THREE.ShaderUtils.lib["cube"];
 			shader.uniforms["tCube"].texture = textureCube;
-	
+
 			var material = new THREE.ShaderMaterial({
 				fragmentShader : shader.fragmentShader,
 				vertexShader : shader.vertexShader,
@@ -126,11 +120,10 @@ var WelcomePart = (function() {
 				depthWrite : false
 			}),
 
-			mesh = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100),
-					material);
-			mesh.flipSided = true;			
+			mesh = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), material);
+			mesh.flipSided = true;
 			sceneCube.add(mesh);
-			
+
 			initialized = true;
 
 			console.log(ID + " part initialized.");
@@ -161,7 +154,7 @@ var WelcomePart = (function() {
 			camera.lookAt(scene.position);
 			cameraCube.rotation.copy(camera.rotation);
 			welcomeText.textGeometry.rotation.copy(camera.rotation);
-		
+
 			renderer.render(sceneCube, cameraCube);
 			renderer.render(scene, camera);
 		}

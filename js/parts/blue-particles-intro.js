@@ -70,17 +70,16 @@ var BlueParticlesIntroPart = (function() {
 			},
 		};
 
-		var shaderMaterial = new THREE.ShaderMaterial(
-				{
-					uniforms : uniforms,
-					attributes : attributes,
-					vertexShader : document.getElementById('vertexshader').textContent,
-					fragmentShader : document.getElementById('fragmentshader').textContent,
+		var shaderMaterial = new THREE.ShaderMaterial({
+			uniforms : uniforms,
+			attributes : attributes,
+			vertexShader : document.getElementById('vertexshader').textContent,
+			fragmentShader : document.getElementById('fragmentshader').textContent,
 
-					blending : THREE.AdditiveBlending,
-					depthTest : false,
-					transparent : true
-				});
+			blending : THREE.AdditiveBlending,
+			depthTest : false,
+			transparent : true
+		});
 
 		var radius = 200;
 		var geometry = new THREE.Geometry();
@@ -125,10 +124,8 @@ var BlueParticlesIntroPart = (function() {
 		});
 
 		text3d.computeBoundingBox();
-		var centerOffsetX = -0.5
-				* (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-		var centerOffsetY = -0.5
-				* (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
+		var centerOffsetX = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+		var centerOffsetY = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
 
 		var _textMaterial = new THREE.MeshBasicMaterial({
 			color : _color,
@@ -167,8 +164,8 @@ var BlueParticlesIntroPart = (function() {
 	}
 
 	/* Initialize animation by buidling a sequence of tweens */
-	function initTweens() {		
-		particlesOpacityUpdate = function() {		
+	function initTweens() {
+		particlesOpacityUpdate = function() {
 			uniforms.opacity.value = particlesOpacity.value;
 		};
 
@@ -255,8 +252,7 @@ var BlueParticlesIntroPart = (function() {
 		init : function(_renderer, params) {
 			renderer = _renderer;
 
-			camera = new THREE.PerspectiveCamera(40, params.screenWidth
-					/ params.screenHeight, 1, 10000);
+			camera = new THREE.PerspectiveCamera(40, params.screenWidth / params.screenHeight, 1, 10000);
 			camera.position.z = 300;
 
 			scene = new THREE.Scene();
@@ -264,19 +260,19 @@ var BlueParticlesIntroPart = (function() {
 			scene.add(camera);
 
 			initParticles();
-			initText();			
+			initText();
 
 			initialized = true;
 
 			console.log(ID + " part initialized.");
 		},
-		
+
 		start : function() {
 			initTweens();
-			
+
 			started = true;
 		},
-		
+
 		isStarted : function() {
 			return started;
 		},
@@ -288,7 +284,7 @@ var BlueParticlesIntroPart = (function() {
 			if (!initialized) {
 				return;
 			}
-		
+
 			var time = params.time * 0.005;
 
 			TWEEN.update(params.localTime);

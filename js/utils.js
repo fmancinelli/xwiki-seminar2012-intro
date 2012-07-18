@@ -15,7 +15,7 @@ var Utils = (function() {
 	var api = {
 		write : function(message) {
 			getTextArea().innerText = message;
-		},		
+		},
 	};
 
 	return api;

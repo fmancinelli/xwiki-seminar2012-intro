@@ -28,8 +28,7 @@ var XWikiIntro = (function() {
 		});
 
 		for (i = 0; i < storyboard.length; i++) {
-			if (_time >= storyboard[i].startTime
-					&& _time < (storyboard[i].startTime + storyboard[i].endTime)) {
+			if (_time >= storyboard[i].startTime && _time < (storyboard[i].startTime + storyboard[i].endTime)) {
 				part = storyboard[i].part;
 
 				if (!part.isStarted()) {

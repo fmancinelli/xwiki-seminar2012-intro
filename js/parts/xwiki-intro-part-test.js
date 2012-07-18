@@ -26,8 +26,7 @@ var TestPart = (function() {
 
 			scene = new THREE.Scene();
 
-			camera = new THREE.PerspectiveCamera(75, params.screenWidth
-					/ params.screenHeight, 1, 10000);
+			camera = new THREE.PerspectiveCamera(75, params.screenWidth / params.screenHeight, 1, 10000);
 			camera.position.z = 1000;
 			scene.add(camera);
 
@@ -44,14 +43,14 @@ var TestPart = (function() {
 
 			console.log(ID + " part initialized.");
 		},
-		
+
 		start : function() {
 			started = true;
 		},
-		
+
 		isStarted : function() {
 			return started;
-		},		
+		},
 
 		/*
 		 * Draw the next frame.

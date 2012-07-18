@@ -28,8 +28,7 @@ var XWikiSeminarPart = (function() {
 
 	var counter = 1;
 
-	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z,
-			_opacity) {
+	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z, _opacity) {
 		function change_uvs(geometry, unitx, unity, offsetx, offsety) {
 			var i, j, uv;
 
@@ -151,7 +150,7 @@ var XWikiSeminarPart = (function() {
 		cameraTween3 = new TWEEN.Tween(cameraPosition).to({
 			z : -3700
 		}, 4000).onUpdate(cameraPositionUpdate);
-		
+
 		/* Go towards the last wall so that all debris will out of screen. */
 		cameraTween4 = new TWEEN.Tween(cameraPosition).to({
 			z : -4500
@@ -165,15 +164,12 @@ var XWikiSeminarPart = (function() {
 		seminarExplosionTween = new TWEEN.Tween({}).to({}, 3900).delay(17000)
 				.onUpdate(wallExplosionUpdate(seminarWall));
 
-		talksExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
-				wallExplosionUpdate(talksWall));
+		talksExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(wallExplosionUpdate(talksWall));
 
-		hackatonExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
-				wallExplosionUpdate(hackatonWall));
+		hackatonExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(wallExplosionUpdate(hackatonWall));
 
-		futureExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
-				wallExplosionUpdate(futureWall));
-	
+		futureExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(wallExplosionUpdate(futureWall));
+
 		seminarExplosionTween.chain(talksExplosionTween);
 		talksExplosionTween.chain(hackatonExplosionTween);
 		hackatonExplosionTween.chain(futureExplosionTween);
@@ -195,25 +191,20 @@ var XWikiSeminarPart = (function() {
 
 			scene = new THREE.Scene();
 
-			camera = new THREE.PerspectiveCamera(50, params.screenWidth
-					/ params.screenHeight, 1, 10000);
+			camera = new THREE.PerspectiveCamera(50, params.screenWidth / params.screenHeight, 1, 10000);
 			camera.position.z = cameraPosition.z;
 			scene.add(camera);
 
-			seminarWall = buildWall("images/seminar.png", 1024, 100, 20, 3, 0,
-					wallsOpacity.value);
+			seminarWall = buildWall("images/seminar.png", 1024, 100, 20, 3, 0, wallsOpacity.value);
 			scene.add(seminarWall);
 
-			talksWall = buildWall("images/talks.png", 1024, 100, 20, 3, -1500,
-					wallsOpacity.value);
+			talksWall = buildWall("images/talks.png", 1024, 100, 20, 3, -1500, wallsOpacity.value);
 			scene.add(talksWall);
 
-			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 20, 3,
-					-3000, wallsOpacity.value);
+			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 20, 3, -3000, wallsOpacity.value);
 			scene.add(hackatonWall);
 
-			futureWall = buildWall("images/future.png", 1024, 100, 20, 3,
-					-4500, wallsOpacity.value);
+			futureWall = buildWall("images/future.png", 1024, 100, 20, 3, -4500, wallsOpacity.value);
 			scene.add(futureWall);
 
 			initialized = true;
@@ -238,7 +229,7 @@ var XWikiSeminarPart = (function() {
 				return;
 			}
 
-			TWEEN.update(params.localTime);			
+			TWEEN.update(params.localTime);
 
 			renderer.render(scene, camera);
 		}

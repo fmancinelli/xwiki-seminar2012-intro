@@ -41,10 +41,8 @@ var XWikiLogoPart = (function() {
 		});
 
 		text3d.computeBoundingBox();
-		var centerOffsetX = -0.5
-				* (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
-		var centerOffsetY = -0.5
-				* (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
+		var centerOffsetX = -0.5 * (text3d.boundingBox.max.x - text3d.boundingBox.min.x);
+		var centerOffsetY = -0.5 * (text3d.boundingBox.max.y - text3d.boundingBox.min.y);
 
 		var _textMaterial = new THREE.MeshBasicMaterial({
 			color : _color,
@@ -138,7 +136,7 @@ var XWikiLogoPart = (function() {
 			xwikiLogo.rotation.x += 0.02;
 			xwikiLogo.rotation.y += 0.03;
 		}
-		
+
 		TWEEN.removeAll();
 
 		/* Begin of XWiki logo tween definition */
@@ -148,8 +146,7 @@ var XWikiLogoPart = (function() {
 			rx : -6.28
 		}, 4000).onUpdate(xwikiLogoUpdate);
 
-		tween1 = new TWEEN.Tween({}).to({}, 31500/* 40000 */).delay(3850)
-				.onUpdate(xwikiLogoFreeRotate);
+		tween1 = new TWEEN.Tween({}).to({}, 31500/* 40000 */).delay(3850).onUpdate(xwikiLogoFreeRotate);
 
 		tween2 = new TWEEN.Tween(xwikiLogoPosition).to({
 			z : 1000,
@@ -197,8 +194,7 @@ var XWikiLogoPart = (function() {
 
 			scene = new THREE.Scene();
 
-			camera = new THREE.PerspectiveCamera(75, params.screenWidth
-					/ params.screenHeight, 1, 10000);
+			camera = new THREE.PerspectiveCamera(75, params.screenWidth / params.screenHeight, 1, 10000);
 			camera.position.z = 1000;
 			scene.add(camera);
 
