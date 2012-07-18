@@ -23,8 +23,8 @@ var XWikiIntro = (function() {
 	 */
 	function mainLoop() {
 		_time = (new Date()).getTime() - startTime;
-
-		Utils.write(_time);
+		
+		//Utils.write(_time);
 
 		requestAnimationFrame(function() {
 		});
@@ -81,7 +81,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		/*addPart(BlueParticlesIntroPart, 0, 43000, {
+		addPart(BlueParticlesIntroPart, 0, 43000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -89,11 +89,11 @@ var XWikiIntro = (function() {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
-		addPart(XWikiSeminarPart, 89001, 60000, {
+		addPart(XWikiSeminarPart, 89001, 33000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
-		});*/
-		addPart(WelcomePart, 0, 60000, {
+		});
+		addPart(WelcomePart, 122001, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
