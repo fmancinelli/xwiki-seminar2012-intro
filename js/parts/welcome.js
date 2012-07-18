@@ -60,7 +60,7 @@ var WelcomePart = (function() {
 		var _textMaterial = new THREE.MeshBasicMaterial({
 			color : _color,
 			overdraw : true,
-			opacity : 1.0
+			opacity : 0.8
 		});
 		text = new THREE.Mesh(text3d, _textMaterial);
 
@@ -105,25 +105,20 @@ var WelcomePart = (function() {
 					/ params.screenHeight, 1, 100000);
 			sceneCube.add(cameraCube);
 			
+			welcomeText = createText("welcome", 0xffffff, 800);
+			scene.add(welcomeText.textGeometry);
+						
 			var path = "images/";
 			var format = '.jpg';
 			var urls = [ path + 't1' + format, path + 't3' + format,
 					path + 'ny' + format, path + 'ny' + format,
 					path + 'ny' + format, path + 't2' + format ];
 
-			var textureCube = THREE.ImageUtils.loadTextureCube(urls,
-					new THREE.CubeRefractionMapping());
-			var material = new THREE.MeshBasicMaterial({
-				color : 0xffffff,
-				envMap : textureCube
-			});
-			
-			welcomeText = createText("Welcome!", 0xffffff, 800);
-			scene.add(welcomeText.textGeometry);
-
+			var textureCube = THREE.ImageUtils.loadTextureCube(urls)
+								
 			var shader = THREE.ShaderUtils.lib["cube"];
 			shader.uniforms["tCube"].texture = textureCube;
-
+	
 			var material = new THREE.ShaderMaterial({
 				fragmentShader : shader.fragmentShader,
 				vertexShader : shader.vertexShader,
@@ -133,9 +128,9 @@ var WelcomePart = (function() {
 
 			mesh = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100),
 					material);
-			mesh.flipSided = true;
+			mesh.flipSided = true;			
 			sceneCube.add(mesh);
-						
+			
 			initialized = true;
 
 			console.log(ID + " part initialized.");
