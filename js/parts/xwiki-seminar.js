@@ -200,19 +200,19 @@ var XWikiSeminarPart = (function() {
 			camera.position.z = cameraPosition.z;
 			scene.add(camera);
 
-			seminarWall = buildWall("images/seminar.png", 1024, 100, 10, 1, 0,
+			seminarWall = buildWall("images/seminar.png", 1024, 100, 20, 3, 0,
 					wallsOpacity.value);
 			scene.add(seminarWall);
 
-			talksWall = buildWall("images/talks.png", 1024, 100, 10, 1, -1500,
+			talksWall = buildWall("images/talks.png", 1024, 100, 20, 3, -1500,
 					wallsOpacity.value);
 			scene.add(talksWall);
 
-			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 10, 1,
+			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 20, 3,
 					-3000, wallsOpacity.value);
 			scene.add(hackatonWall);
 
-			futureWall = buildWall("images/future.png", 1024, 100, 10, 1,
+			futureWall = buildWall("images/future.png", 1024, 100, 20, 3,
 					-4500, wallsOpacity.value);
 			scene.add(futureWall);
 
