@@ -151,10 +151,16 @@ var XWikiSeminarPart = (function() {
 		cameraTween3 = new TWEEN.Tween(cameraPosition).to({
 			z : -3700
 		}, 4000).onUpdate(cameraPositionUpdate);
+		
+		/* Go towards the last wall so that all debris will out of screen. */
+		cameraTween4 = new TWEEN.Tween(cameraPosition).to({
+			z : -4500
+		}, 8000).onUpdate(cameraPositionUpdate);
 
 		cameraTween.chain(cameraTween1);
 		cameraTween1.chain(cameraTween2);
 		cameraTween2.chain(cameraTween3);
+		cameraTween3.chain(cameraTween4);
 
 		seminarExplosionTween = new TWEEN.Tween({}).to({}, 3900).delay(17100)
 				.onUpdate(wallExplosionUpdate(seminarWall));
