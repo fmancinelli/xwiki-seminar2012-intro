@@ -22,9 +22,7 @@ var XWikiIntro = (function() {
 	 * given time.
 	 */
 	function mainLoop() {
-		_time = (new Date()).getTime() - startTime;
-		
-		//Utils.write(_time);
+		_time = audio.currentTime * 1000;
 
 		requestAnimationFrame(function() {
 		});
