@@ -81,7 +81,7 @@ var XWikiIntro = (function() {
 	 * intro is defined.
 	 */
 	function initParts(_screenWidth, _screenHeight) {
-		addPart(BlueParticlesIntroPart, 0, 43000, {
+		/*addPart(BlueParticlesIntroPart, 0, 43000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
@@ -90,6 +90,10 @@ var XWikiIntro = (function() {
 			screenHeight : _screenHeight
 		});
 		addPart(XWikiSeminarPart, 89001, 60000, {
+			screenWidth : _screenWidth,
+			screenHeight : _screenHeight
+		});*/
+		addPart(WelcomePart, 0, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
