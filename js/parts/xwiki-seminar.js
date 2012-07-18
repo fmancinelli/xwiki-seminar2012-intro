@@ -238,25 +238,7 @@ var XWikiSeminarPart = (function() {
 				return;
 			}
 
-			TWEEN.update(params.localTime);
-
-			// if (counter > 100) {
-			// for (i = 0; i < wall.children.length; i++) {
-			// cube = wall.children[i];
-			//
-			// cube.rotation.x += 10 * cube.dx;
-			// cube.rotation.y += 10 * cube.dy;
-			//
-			// cube.position.x += 200 * cube.dx;
-			// cube.position.y += 200 * cube.dy;
-			// cube.position.z += 400 * cube.dx;
-			//
-			// }
-			// }
-
-			// camera.position.z -= 5;
-
-			// counter++;
+			TWEEN.update(params.localTime);			
 
 			renderer.render(scene, camera);
 		}
