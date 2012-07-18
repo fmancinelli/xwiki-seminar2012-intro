@@ -138,7 +138,7 @@ var XWikiSeminarPart = (function() {
 
 		cameraTween = new TWEEN.Tween(cameraPosition).to({
 			z : 800
-		}, 4000).delay(13200).onUpdate(cameraPositionUpdate);
+		}, 4000).delay(13100).onUpdate(cameraPositionUpdate);
 
 		cameraTween1 = new TWEEN.Tween(cameraPosition).to({
 			z : -700
@@ -162,7 +162,7 @@ var XWikiSeminarPart = (function() {
 		cameraTween2.chain(cameraTween3);
 		cameraTween3.chain(cameraTween4);
 
-		seminarExplosionTween = new TWEEN.Tween({}).to({}, 3900).delay(17100)
+		seminarExplosionTween = new TWEEN.Tween({}).to({}, 3900).delay(17000)
 				.onUpdate(wallExplosionUpdate(seminarWall));
 
 		talksExplosionTween = new TWEEN.Tween({}).to({}, 3900).onUpdate(
