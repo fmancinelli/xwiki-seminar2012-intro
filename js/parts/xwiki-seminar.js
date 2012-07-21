@@ -201,7 +201,7 @@ var XWikiSeminarPart = (function() {
 			talksWall = buildWall("images/talks.png", 1024, 100, 20, 3, -1500, wallsOpacity.value);
 			scene.add(talksWall);
 
-			hackatonWall = buildWall("images/hackaton.png", 1024, 100, 20, 3, -3000, wallsOpacity.value);
+			hackatonWall = buildWall("images/hackathon.png", 1024, 100, 20, 3, -3000, wallsOpacity.value);
 			scene.add(hackatonWall);
 
 			futureWall = buildWall("images/future.png", 1024, 100, 20, 3, -4500, wallsOpacity.value);
