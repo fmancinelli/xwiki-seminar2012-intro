@@ -1,21 +1,60 @@
-var BlueParticlesIntroPart = (function() {
-	/** Constants */
-	var ID = "Blue particles";
+/* This part has been built starting from http://mrdoob.github.com/three.js/examples/webgl_custom_attributes_particles.html */
 
-	/** Internal variables */
+var BlueParticlesIntroPart = (function() {
+	/*
+	 * Constants
+	 */
+	var ID = "Blue particles intro";
+
+	/*
+	 * Internal variables
+	 */
 	var initialized = false;
 	var started = false;
 	var renderer = null;
 	var scene = null;
 	var camera = null;
 	var mesh = null;
-	var sphere;
+	var sphere = null;
 
-	/** Shader variables */
-	var uniforms;
-	var attributes;
+	/*
+	 * Shaders
+	 */
+	var vertexShader = [ 
+	                    "uniform float amplitude;", 
+	                    "attribute float size;", 
+	                    "attribute vec3 customColor;", 
+	                    "",
+	                    "varying vec3 vColor;", 
+	                    "",
+	                    "void main() {", 
+	                    "	vColor = customColor;", 
+	                    "",
+	                    "	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );", 
+	                    "", 	                    
+	                    "	gl_PointSize = size * ( 150.0 / length( mvPosition.xyz ) );", "",
+	                    "	gl_Position = projectionMatrix * mvPosition;", "}" 
+	                    ].join("\n");
 
-	/** Tween, objects and animation state variables */
+	var fragmentShader = [ 
+	                      "uniform vec3 color;", 
+	                      "uniform sampler2D texture;", 
+	                      "uniform float opacity;",
+	                      "",
+	                      "varying vec3 vColor;", 
+	                      "", 
+	                      "void main() {", 
+	                      "	gl_FragColor = vec4( color * vColor, opacity );",
+	                      "	gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );", 
+	                      "}"
+	                      ].join("\n");
+
+	var uniforms = null;
+	var attributes = null;
+
+	/*
+	 * Tween, objects and animation state variables
+	 */
 	var tween;
 
 	var particlesOpacity = {
@@ -35,7 +74,9 @@ var BlueParticlesIntroPart = (function() {
 		value : 0.0
 	};
 
-	/* Particle background initialization */
+	/*
+	 * Particle background initialization
+	 */
 	function initParticles() {
 		attributes = {
 
@@ -73,8 +114,8 @@ var BlueParticlesIntroPart = (function() {
 		var shaderMaterial = new THREE.ShaderMaterial({
 			uniforms : uniforms,
 			attributes : attributes,
-			vertexShader : document.getElementById('vertexshader').textContent,
-			fragmentShader : document.getElementById('fragmentshader').textContent,
+			vertexShader : vertexShader,
+			fragmentShader : fragmentShader,
 
 			blending : THREE.AdditiveBlending,
 			depthTest : false,
@@ -152,7 +193,9 @@ var BlueParticlesIntroPart = (function() {
 		};
 	}
 
-	/* Initialize text objects */
+	/*
+	 * Initialize text objects
+	 */
 	function initText() {
 		yearText = createText("july 2012", 0xFFFFFF, 20);
 		romaniaText = createText("romania", 0xFFFFFF, 20);
@@ -163,7 +206,9 @@ var BlueParticlesIntroPart = (function() {
 		scene.add(tulceaText.textGeometry);
 	}
 
-	/* Initialize animation by buidling a sequence of tweens */
+	/*
+	 * Initialize animation by buidling a sequence of tweens
+	 */
 	function initTweens() {
 		particlesOpacityUpdate = function() {
 			uniforms.opacity.value = particlesOpacity.value;

@@ -1,10 +1,10 @@
 var XWikiLogoPart = (function() {
-	/**
+	/*
 	 * Constants.
 	 */
 	var ID = "XWiki logo";
 
-	/**
+	/*
 	 * Internal variables.
 	 */
 	var initialized = false;

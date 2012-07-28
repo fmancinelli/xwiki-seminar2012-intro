@@ -1,10 +1,10 @@
 var XWikiIntro = (function() {
-	/**
+	/*
 	 * Constants.
 	 */
 	var REFRESH_RATE = 60; // Hz
 
-	/**
+	/*
 	 * Internal variables.
 	 */
 	var storyboard = [];
@@ -13,7 +13,7 @@ var XWikiIntro = (function() {
 	var startTime = 0;
 	var text = null;
 
-	/**
+	/*
 	 * Functions.
 	 */
 
@@ -22,15 +22,32 @@ var XWikiIntro = (function() {
 	 * given time.
 	 */
 	function mainLoop() {
-		_time = audio.currentTime * 1000;
+		/*
+		 * Synch with audio time. Parts timing is in milliseconds, audio time is
+		 * in seconds
+		 */
+		var _time = audio.currentTime * 1000;
 
 		requestAnimationFrame(function() {
 		});
 
-		for (i = 0; i < storyboard.length; i++) {
+		/*
+		 * Go through all the storyboard parts, check what are the active ones,
+		 * start them if they are not already started, and draw the
+		 * corresponding frames.
+		 */
+		for ( var i = 0; i < storyboard.length; i++) {
 			if (_time >= storyboard[i].startTime && _time < (storyboard[i].startTime + storyboard[i].endTime)) {
 				part = storyboard[i].part;
 
+				/*
+				 * This is needed for initializing tweens used in different
+				 * parts. Since Tween.js uses a global object, each part has to
+				 * clear the tweens registered by the previous parts and add its
+				 * own. It could be fine if parts are timed using global clock,
+				 * but since they use a local one, they had at least to reset
+				 * the tweens so that they start from time 0.
+				 */
 				if (!part.isStarted()) {
 					part.start();
 				}
@@ -44,7 +61,7 @@ var XWikiIntro = (function() {
 	}
 
 	/*
-	 * Add a part after and initialize it.
+	 * Add a part and initialize it.
 	 */
 	function addPart(_part, _startTime, _endTime, initParams) {
 		_part.init(renderer, initParams);
@@ -55,6 +72,9 @@ var XWikiIntro = (function() {
 		});
 	}
 
+	/*
+	 * Init audio.
+	 */
 	function initAudio() {
 		audio = new Audio("audio/dope.mp3");
 	}
@@ -82,14 +102,17 @@ var XWikiIntro = (function() {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
+
 		addPart(XWikiLogoPart, 43001, 46000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
+
 		addPart(XWikiSeminarPart, 89001, 33000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
 		});
+
 		addPart(WelcomePart, 122001, 60000, {
 			screenWidth : _screenWidth,
 			screenHeight : _screenHeight
@@ -113,13 +136,11 @@ var XWikiIntro = (function() {
 		 * Start the intro.
 		 */
 		start : function() {
-			startTime = (new Date()).getTime();
+			/* Start the intro when the audio is loaded and ready to play. */
 			audio.addEventListener('canplay', function() {
-				// audio.currentTime = 89;
 				audio.play();
 				setInterval(mainLoop, 1000.0 / REFRESH_RATE);
 			})
-
 		}
 	};
 

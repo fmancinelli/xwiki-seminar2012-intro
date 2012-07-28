@@ -1,26 +1,33 @@
 var WelcomePart = (function() {
-	/**
+	/*
 	 * Constants.
 	 */
 	var ID = "Welcome";
 
-	/**
+	/*
 	 * Internal variables.
 	 */
 	var initialized = false;
 	var started = false;
 	var renderer = null;
 	var scene = null;
+	var sceneCube = null;
 	var camera = null;
-	var mesh = null;
+	var cameraCube = null;	
 
+	var welcomeText;
+
+	/*
+	 * State variable for camera position animation
+	 */
 	var cameraPosition = {
 		x : 20000,
 		y : 380
 	}
 
-	var cameraCube, sceneCube, welcomeText;
-
+	/*
+	 * Initialize tweens for camera position movement.
+	 */
 	function initTweens() {
 		tween = new TWEEN.Tween(cameraPosition).to({
 			x : -20000,
@@ -118,9 +125,9 @@ var WelcomePart = (function() {
 				vertexShader : shader.vertexShader,
 				uniforms : shader.uniforms,
 				depthWrite : false
-			}),
+			});
 
-			mesh = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), material);
+			var mesh = new THREE.Mesh(new THREE.CubeGeometry(100, 100, 100), material);
 			mesh.flipSided = true;
 			sceneCube.add(mesh);
 

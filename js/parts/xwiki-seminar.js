@@ -1,10 +1,10 @@
 var XWikiSeminarPart = (function() {
-	/**
+	/*
 	 * Constants.
 	 */
 	var ID = "XWiki seminar";
 
-	/**
+	/*
 	 * Internal variables.
 	 */
 	var initialized = false;
@@ -18,6 +18,9 @@ var XWikiSeminarPart = (function() {
 	var hackatonWall = null;
 	var futureWall = null;
 
+	/*
+	 * State variables for tweens.
+	 */
 	var wallsOpacity = {
 		value : 0.0
 	};
@@ -28,6 +31,9 @@ var XWikiSeminarPart = (function() {
 
 	var counter = 1;
 
+	/*
+	 * Helper function for building textured walls.
+	 */
 	function buildWall(texture, textureWidth, textureHeight, xgrid, ygrid, z, _opacity) {
 		function change_uvs(geometry, unitx, unity, offsetx, offsety) {
 			var i, j, uv;
