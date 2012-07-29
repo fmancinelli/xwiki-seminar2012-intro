@@ -10,4 +10,6 @@ This was mainly a first attempt for me to explore Javascript, WebGL and, above a
 
 I publish it because somebody could find some interesting stuff in it.
 
+I've put it live on http://fabio.mancinelli.me/xwiki-seminar2012-intro/
+
 Enjoy.
