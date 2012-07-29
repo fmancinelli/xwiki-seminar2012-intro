@@ -13,3 +13,5 @@ I publish it because somebody could find some interesting stuff in it.
 I've put it live on http://fabio.mancinelli.me/xwiki-seminar2012-intro/
 
 Enjoy.
+
+P.S.: It only works with Chrome/Chromium.
