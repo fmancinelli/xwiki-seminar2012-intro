@@ -1,3 +1,5 @@
+/* This part has been built starting from http://mrdoob.github.com/three.js/examples/webgl_materials_cubemap_balls_refraction.html */
+
 var WelcomePart = (function() {
 	/*
 	 * Constants.
@@ -13,7 +15,7 @@ var WelcomePart = (function() {
 	var scene = null;
 	var sceneCube = null;
 	var camera = null;
-	var cameraCube = null;	
+	var cameraCube = null;
 
 	var welcomeText;
 

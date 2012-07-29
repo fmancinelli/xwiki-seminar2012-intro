@@ -1,3 +1,5 @@
+/* This part has been built by reusing some code from http://mrdoob.github.com/three.js/examples/webgl_materials_video.html */
+
 var XWikiSeminarPart = (function() {
 	/*
 	 * Constants.
