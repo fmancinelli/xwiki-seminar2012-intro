@@ -12,6 +12,7 @@ var XWikiLogoPart = (function() {
 	var renderer = null;
 	var scene = null;
 	var camera = null;
+	var composer = null;
 	var tween = null;
 	var xwikiLogo = null;
 	var xwikiLogoPosition = {
@@ -207,6 +208,19 @@ var XWikiLogoPart = (function() {
 			xwikiText.mesh.position.y = xwikiTextPosition.y;
 			xwikiText.mesh.position.z = xwikiTextPosition.z;
 			scene.add(xwikiText.mesh);
+			
+			/* Post processing */						
+			var renderModel = new THREE.RenderPass( scene, camera );
+			var effectBloom = new THREE.BloomPass( 1.0 );
+			var effectScreen = new THREE.ShaderPass( THREE.ShaderExtras[ "screen" ] );
+
+			effectScreen.renderToScreen = true;
+
+			composer = new THREE.EffectComposer( renderer );
+
+			composer.addPass( renderModel );
+			composer.addPass( effectBloom );
+			composer.addPass( effectScreen );
 
 			initialized = true;
 
@@ -215,6 +229,12 @@ var XWikiLogoPart = (function() {
 
 		start : function() {
 			initTweens();
+			
+			/*
+			 * Autoclear should be explicitly set for each part in the start
+			 * function in order to be sure that it is correctly initialized.
+			 */
+			renderer.autoClear = false;
 
 			started = true;
 		},
@@ -233,7 +253,8 @@ var XWikiLogoPart = (function() {
 
 			TWEEN.update(params.localTime);
 
-			renderer.render(scene, camera);
+			renderer.clear();
+			composer.render();			
 		}
 	}
 

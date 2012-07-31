@@ -315,6 +315,12 @@ var BlueParticlesIntroPart = (function() {
 		start : function() {
 			initTweens();
 
+			/*
+			 * Autoclear should be explicitly set for each part in the start
+			 * function in order to be sure that it is correctly initialized.
+			 */
+			renderer.autoClear = true;
+
 			started = true;
 		},
 

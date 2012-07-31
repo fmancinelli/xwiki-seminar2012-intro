@@ -12,6 +12,7 @@ var WelcomePart = (function() {
 	var initialized = false;
 	var started = false;
 	var renderer = null;
+	var composer = null;
 	var scene = null;
 	var sceneCube = null;
 	var camera = null;
@@ -140,7 +141,13 @@ var WelcomePart = (function() {
 
 		start : function() {
 			initTweens();
+
+			/*
+			 * Autoclear should be explicitly set for each part in the start
+			 * function in order to be sure that it is correctly initialized.
+			 */
 			renderer.autoClear = false;
+
 			started = true;
 		},
 

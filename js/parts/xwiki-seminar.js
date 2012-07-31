@@ -215,6 +215,19 @@ var XWikiSeminarPart = (function() {
 			futureWall = buildWall("images/future.png", 1024, 100, 20, 3, -4500, wallsOpacity.value);
 			scene.add(futureWall);
 
+			/* Post processing */			
+			var renderModel = new THREE.RenderPass(scene, camera);
+			var effectBloom = new THREE.BloomPass(1.0);
+			var effectScreen = new THREE.ShaderPass(THREE.ShaderExtras["screen"]);
+
+			effectScreen.renderToScreen = true;
+
+			composer = new THREE.EffectComposer(renderer);
+
+			composer.addPass(renderModel);
+			composer.addPass(effectBloom);
+			composer.addPass(effectScreen);
+
 			initialized = true;
 
 			console.log(ID + " part initialized.");
@@ -222,6 +235,13 @@ var XWikiSeminarPart = (function() {
 
 		start : function() {
 			initTweens();
+			
+			/*
+			 * Autoclear should be explicitly set for each part in the start
+			 * function in order to be sure that it is correctly initialized.
+			 */
+			renderer.autoClear = false;
+			
 			started = true;
 		},
 
@@ -239,7 +259,8 @@ var XWikiSeminarPart = (function() {
 
 			TWEEN.update(params.localTime);
 
-			renderer.render(scene, camera);
+			renderer.clear();
+			composer.render();
 		}
 	}
 
