@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This is a small intro that I built in order to "open" the annual XWiki seminar.
+This is a small intro that I built to "open" the annual XWiki seminar.
 Using demo-scene jargon, this intro "ripped" a lot of stuff from other productions, in particular Three.js examples (you can see what in the code comments).
 
 The music I used is the soundtrack of the glorious "Dope" demo by Complex (1995) - http://www.youtube.com/watch?v=_yJ5M3BY2Ts
